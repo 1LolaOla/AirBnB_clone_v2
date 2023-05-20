@@ -1,0 +1,84 @@
+#!/usr/bin/python3
+"""
+This module defines a Flask web application.
+"""
+
+from flask import Flask, render_template
+from markupsafe import escape
+
+app = Flask(__name__)
+
+
+@app.route('/', strict_slashes=False)
+def hello_hbnb():
+    """
+    This function defines the route '/' of the Flask web application.
+    It returns the string 'Hello HBNB!'.
+    """
+    return 'Hello HBNB!'
+
+
+@app.route('/hbnb', strict_slashes=False)
+def hbnb():
+    """
+    This function defines the route '/hbnb' of the Flask web application.
+    It returns the string 'HBNB'.
+    """
+    return 'HBNB'
+
+
+@app.route('/c/<text>', strict_slashes=False)
+def c_route(text):
+    """
+    This function defines the route '/c/<text>' of the Flask web application.
+    It returns the string 'C ' followed by the value of the text variable
+    (replace underscore _ symbols with a space).
+    """
+    return 'C {}'.format(escape(text).replace('_', ' '))
+
+
+@app.route('/python/', strict_slashes=False)
+@app.route('/python/<text>', strict_slashes=False)
+def python_route(text='is cool'):
+    """
+    This function defines the route '/python/<text>' of the Flask web application.
+    If no text is provided, it uses the default value 'is cool'.
+    It returns the string 'Python ' followed by the value of the text variable
+    (replace underscore _ symbols with a space).
+    """
+    return 'Python {}'.format(escape(text).replace('_', ' '))
+
+
+@app.route('/number/<int:n>', strict_slashes=False)
+def number_route(n):
+    """
+    This function defines the route '/number/<n>' of the Flask web application.
+    It returns the string 'n is a number' only if n is an integer.
+    """
+    return '{} is a number'.format(n)
+
+
+@app.route('/number_template/<int:n>', strict_slashes=False)
+def number_template_route(n):
+    """
+    This function defines the route '/number_template/<n>' of the Flask web application.
+    It returns an HTML page with the number n displayed in the <h1> tag.
+    """
+    return render_template('6-number_template.html', n=n)
+
+
+@app.route('/number_odd_or_even/<int:n>', strict_slashes=False)
+def number_odd_or_even_route(n):
+    """
+    This function defines the route '/number_odd_or_even/<n>' of the Flask web application.
+    It returns an HTML page with the number n and its odd or even status displayed in the <h1> tag.
+    """
+    if n % 2 == 0:
+        status = 'even'
+    else:
+        status = 'odd'
+    return render_template('6-number_odd_or_even.html', n=n, status=status)
+
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000)
