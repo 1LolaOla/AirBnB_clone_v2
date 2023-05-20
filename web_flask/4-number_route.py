@@ -4,59 +4,54 @@ This module defines a Flask web application.
 """
 
 from flask import Flask
-from markupsafe import escape
 
 app = Flask(__name__)
 
 
 @app.route('/', strict_slashes=False)
 def hello_hbnb():
-    """
-    This function defines the route '/' of the Flask web application.
-    It returns the string 'Hello HBNB!'.
-    """
+    '''
+    displays "Hello HBNB!" for route: /
+    '''
     return 'Hello HBNB!'
 
 
 @app.route('/hbnb', strict_slashes=False)
-def hbnb():
-    """
-    This function defines the route '/hbnb' of the Flask web application.
-    It returns the string 'HBNB'.
-    """
+def hello():
+    '''
+    displays "HBNB" for route: /hbnb
+    '''
     return 'HBNB'
 
 
 @app.route('/c/<text>', strict_slashes=False)
-def c_route(text):
-    """
-    This function defines the route '/c/<text>' of the Flask web application.
-    It returns the string 'C ' followed by the value of the text variable
-    (replace underscore _ symbols with a space).
-    """
-    return 'C {}'.format(escape(text).replace('_', ' '))
+def c_is_fun(text):
+    '''
+    - displays "C" followed by value of the text variable
+    - replaces underscore "_" with a space " "
+    '''
+    return 'C ' + text.replace('_', ' ')
 
 
 @app.route('/python/', strict_slashes=False)
 @app.route('/python/<text>', strict_slashes=False)
-def python_route(text='is cool'):
-    """
-    This function defines the route '/python/<text>' of the Flask web application.
-    If no text is provided, it uses the default value 'is cool'.
-    It returns the string 'Python ' followed by the value of the text variable
-    (replace underscore _ symbols with a space).
-    """
-    return 'Python {}'.format(escape(text).replace('_', ' '))
+def python_is_cool(text='is_cool'):
+    '''
+    - displays "Python" followed by the value of the text
+    - replaces underscore "_" with a space " "
+    - displays default value if route is /python/
+    '''
+    return 'Python ' + text.replace('_', ' ')
 
 
 @app.route('/number/<int:n>', strict_slashes=False)
-def number_route(n):
-    """
-    This function defines the route '/number/<n>' of the Flask web application.
-    It returns the string 'n is a number' only if n is an integer.
-    """
+def display_number(n):
+    '''
+    - dipslays "<n> is a number" only if n is an integer
+    '''
     return '{} is a number'.format(n)
 
 
 if __name__ == '__main__':
+    ''' main function '''
     app.run(host='0.0.0.0', port=5000)
