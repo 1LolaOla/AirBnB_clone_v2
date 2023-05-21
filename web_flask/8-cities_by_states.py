@@ -1,23 +1,23 @@
-#!/usr/bin/python3
+#!/usr/bin/python
 
 from flask import Flask, render_template
 from models import storage
-from models.state import State
+
 
 app = Flask(__name__)
 
 
-@app.teardown_appcontext
-def teardown_session(exception):
-    storage.close()
-
-
 @app.route('/cities_by_states', strict_slashes=False)
 def cities_by_states():
-    states = storage.all(State).values()
-    sorted_states = sorted(states, key=lambda state: state.name)
+    ''' lists state in db storage '''
+    states = storage.all('State').values()
+    return render_template('8-cities_by_states.html', states=states)
 
-    return render_template('8-cities_by_states.html', states=sorted_states)
+
+@app.teardown_appcontext
+def close_db(exception):
+    ''' remove SQLAlchemy Session after each request '''
+    storage.close()
 
 
 if __name__ == '__main__':
