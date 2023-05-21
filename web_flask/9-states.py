@@ -3,34 +3,36 @@
 Starts a Flask web application that displays states and cities.
 """
 
-from flask import Flask, render_template
 from models import storage
+from flask import Flask
+from flask import render_template
 
 app = Flask(__name__)
 
 
+@app.route("/states", strict_slashes=False)
+def states():
+    """Displays an HTML page with a list of all States.
+    States are sorted by name.
+    """
+    states = storage.all("State")
+    return render_template("9-states.html", state=states)
+
+
+@app.route("/states/<id>", strict_slashes=False)
+def states_id(id):
+    """Displays an HTML page with info about <id>, if it exists."""
+    for state in storage.all("State").values():
+        if state.id == id:
+            return render_template("9-states.html", state=state)
+    return render_template("9-states.html")
+
+
 @app.teardown_appcontext
-def teardown_db(exception):
-    """Closes the database session after each request."""
+def teardown(exc):
+    """Remove the current SQLAlchemy session."""
     storage.close()
 
 
-@app.route('/states', strict_slashes=False)
-def states():
-    """Displays a HTML page with a list of all states."""
-    states = storage.all('State').values()
-    return render_template('9-states.html', states=states)
-
-
-@app.route('/states/<id>', strict_slashes=False)
-def states_cities(id):
-    """Displays a HTML page with cities of a specific state."""
-    state = storage.get('State', id)
-    if state is None:
-        return render_template('9-states.html', state=None)
-    cities = state.cities
-    return render_template('9-states.html', state=state, cities=cities)
-
-
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+if __name__ == "__main__":
+    app.run(host="0.0.0.0")
