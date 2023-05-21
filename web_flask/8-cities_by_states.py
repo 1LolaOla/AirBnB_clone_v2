@@ -3,14 +3,12 @@
 from flask import Flask, render_template
 from models import storage
 from models.state import State
-from models.city import City
-
 
 app = Flask(__name__)
 
 
 @app.teardown_appcontext
-def teardown_appcontext(exception):
+def teardown_session(exception):
     storage.close()
 
 
