@@ -1,5 +1,5 @@
-#!/usr/bin/python
-
+#!/usr/bin/python3
+''' connect flask to storage '''
 from flask import Flask, render_template
 from models import storage
 
